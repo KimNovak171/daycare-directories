@@ -1,0 +1,78 @@
+import Link from "next/link";
+import { US_STATES, stateToSlug } from "@/lib/states";
+import { getStateSlugs, getCitiesForState } from "@/lib/data";
+
+export default function Footer() {
+  const stateSlugsWithData = getStateSlugs();
+
+  return (
+    <footer className="border-t border-sky-200/60 bg-slate-50">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <Link href="/" className="text-lg font-bold text-sky-800">
+            Daycare Directories
+          </Link>
+          <p className="text-sm text-slate-600">
+            Find Trusted Childcare — City by City
+          </p>
+        </div>
+        <nav className="flex flex-col flex-wrap gap-y-4 text-sm">
+          <h3 className="font-semibold text-slate-800">USA — States & Cities</h3>
+          <ul className="flex flex-col gap-1">
+            {US_STATES.map((stateName) => {
+              const slug = stateToSlug(stateName);
+              const hasData = stateSlugsWithData.includes(slug);
+              const cities = hasData ? getCitiesForState(slug) : [];
+              return (
+                <li key={slug} className="flex flex-col gap-0.5">
+                  <Link
+                    href={`/${slug}`}
+                    className="font-medium text-sky-700 hover:underline"
+                  >
+                    {stateName}
+                  </Link>
+                  {cities.length > 0 && (
+                    <ul className="ml-4 flex flex-wrap gap-x-2 gap-y-0.5">
+                      {cities.map((city) => (
+                        <li key={city.slug}>
+                          <Link
+                            href={`/${slug}/${city.slug}`}
+                            className="text-slate-600 hover:text-sky-600 hover:underline"
+                          >
+                            {city.name}
+                          </Link>
+                          <span className="text-slate-400">
+                            {cities.indexOf(city) < cities.length - 1 ? " · " : ""}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <Link
+              href="/canada"
+              className="font-medium text-sky-700 hover:underline"
+            >
+              Canada
+            </Link>
+          </div>
+          <div className="mt-4 pt-4 border-t border-slate-200">
+            <Link
+              href="/advertise"
+              className="font-medium text-sky-700 hover:underline"
+            >
+              Advertise
+            </Link>
+          </div>
+        </nav>
+        <p className="mt-8 text-xs text-slate-500">
+          © {new Date().getFullYear()} Daycare Directories. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  );
+}
