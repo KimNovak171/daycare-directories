@@ -32,18 +32,18 @@ export default function Footer() {
                     {stateName}
                   </Link>
                   {cities.length > 0 && (
-                    <ul className="ml-4 flex flex-wrap gap-x-2 gap-y-0.5">
-                      {cities.map((city) => (
-                        <li key={city.slug}>
+                    <ul className="ml-4 flex flex-wrap gap-x-1 gap-y-0.5">
+                      {cities.map((city, i) => (
+                        <li key={city.slug} className="inline">
                           <Link
                             href={`/${slug}/${city.slug}`}
                             className="text-slate-600 hover:text-sky-600 hover:underline"
                           >
                             {city.name}
                           </Link>
-                          <span className="text-slate-400">
-                            {cities.indexOf(city) < cities.length - 1 ? " · " : ""}
-                          </span>
+                          {i < cities.length - 1 ? (
+                            <span className="text-slate-400"> · </span>
+                          ) : null}
                         </li>
                       ))}
                     </ul>

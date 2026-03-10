@@ -4,7 +4,7 @@ import type { Facility } from "./types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
-function slugify(text: string): string {
+export function slugify(text: string): string {
   return text
     .toLowerCase()
     .replace(/\s+/g, "-")

@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Daycare Directories
+
+**Find Trusted Childcare — City by City**
+
+A professional directory site for daycare and childcare facilities across the USA and Canada. Built with Next.js, TypeScript, and Tailwind CSS. Deploy target: Vercel.
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Data
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Facility data lives in the `/data` folder as JSON files.
+- One file per state: `[state]_facilities.json` (e.g. `florida_facilities.json`).
+- Each file is a flat array of facility objects with: `name`, `address`, `city`, `state`, `phone`, `website`, `rating`, `reviews`, `care_type`, `recommended`, `latitude`, `longitude` (and optional `featured`, `premium`).
+- The site builds successfully with empty arrays; add real data as you complete each state.
 
-## Learn More
+## Routes
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Homepage** `/` — Hero, stats, state grid, Canada section, featured facilities
+- **State** `/[state-slug]` — Facility count, care type breakdown, city listing, recommended vs review carefully
+- **City** `/[state-slug]/[city-slug]` — All facilities for that city with badges
+- **Canada** `/canada` — Province listing
+- **Canada Province** `/canada/[province-slug]` — Province page (city data extensible later)
+- **Canada City** `/canada/[province-slug]/[city-slug]` — Placeholder for city-level Canada data
+- **Advertise** `/advertise` — Featured ($49/mo) and Premium ($99/mo) options; Stripe links to be added
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push the repo to GitHub (or connect your Git provider).
+2. In [Vercel](https://vercel.com), import the project. Next.js is auto-detected.
+3. Deploy. The `data` folder is included in the build; add or update JSON files and redeploy as you add states.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build   # verify production build locally
+```
+
+## Tech
+
+- Next.js 16 (App Router)
+- TypeScript
+- Tailwind CSS v4
+- Static/SSG where possible; state and city pages use `generateStaticParams`
