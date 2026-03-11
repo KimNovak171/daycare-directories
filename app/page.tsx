@@ -7,6 +7,9 @@ import {
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
 
+// Ensure homepage is statically generated at build time (fixes 404 on Vercel)
+export const dynamic = "force-static";
+
 const EXAMPLE_FACILITIES: Facility[] = [
   {
     name: "Sunshine Kids Learning Center",
