@@ -15,10 +15,10 @@ export interface Facility {
   city: string;
   state: string;
   phone: string;
-  website: string;
+  website: string | null;
   rating: number;
   reviews: number;
-  care_type: CareType;
+  care_type: CareType | string;
   recommended: boolean;
   latitude: number;
   longitude: number;
