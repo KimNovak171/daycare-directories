@@ -130,7 +130,7 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
       </div>
       <div className="space-y-1 text-[15px] text-slate-700">
         <p>
-          {facility.address}, {facility.city}, {facility.state}
+          {facility.address}
         </p>
       </div>
       <div className="flex flex-wrap items-center gap-3 text-[15px]">
