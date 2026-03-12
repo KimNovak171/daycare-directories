@@ -3,18 +3,22 @@ import { notFound } from "next/navigation";
 import {
   getStateNameFromSlug,
   getFacilitiesForState,
-  getCitiesForState,
   getCareTypeBreakdown,
   getTopCitiesForState,
   getTopCareTypes,
-  slugify,
+  getCitiesForStateWithRating,
 } from "@/lib/data";
 import { US_STATES, stateToSlug } from "@/lib/states";
-import { RECOMMENDED_RATING_THRESHOLD } from "@/lib/types";
 import FacilityCard from "@/components/FacilityCard";
 
 const VALID_STATE_SLUGS = new Set(US_STATES.map((s) => stateToSlug(s)));
 const SITE_URL = "https://www.daycaredirectories.com";
+
+// Rich dark teal (parent-friendly substitute for navy)
+const HERO_BG = "#0f766e";
+const HERO_SOFT = "rgba(13, 148, 136, 0.15)";
+const ACCENT_TEAL = "#0d9488";
+const BORDER_LEFT = "#115e59";
 
 export function generateStaticParams() {
   return US_STATES.map((stateName) => ({
@@ -59,16 +63,17 @@ export default async function StatePage({
 
   const stateName = getStateNameFromSlug(stateSlug);
   const facilities = getFacilitiesForState(stateSlug);
-  const cities = getCitiesForState(stateSlug);
+  const cities = getCitiesForStateWithRating(stateSlug);
   const breakdown = getCareTypeBreakdown(facilities);
-  const topCities = getTopCitiesForState(stateSlug, 3);
+  const topCities = getTopCitiesForState(stateSlug, 4);
   const topCareTypes = getTopCareTypes(breakdown, 4);
-  const recommended = facilities.filter(
-    (f) => (f.rating ?? 0) >= RECOMMENDED_RATING_THRESHOLD
-  );
-  const reviewCarefully = facilities.filter(
-    (f) => (f.rating ?? 0) < RECOMMENDED_RATING_THRESHOLD || f.rating == null
-  );
+  const averageRating =
+    facilities.length > 0
+      ? facilities.reduce((sum, f) => sum + (f.rating ?? 0), 0) /
+        facilities.filter((f) => f.rating != null).length
+      : null;
+  const hasRating = typeof averageRating === "number" && !Number.isNaN(averageRating);
+  const featuredFacilities = facilities.filter((f) => f.featured || f.premium).slice(0, 3);
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -90,142 +95,139 @@ export default async function StatePage({
       : "day care centers, preschools, after school programs, and more";
 
   return (
-    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
+    <main className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <h1 className="font-heading text-3xl font-bold text-teal-900">
-          {stateName} Daycare, Preschool & Childcare Directory
+      <nav className="mb-4" aria-label="Breadcrumb">
+        <Link
+          href="/"
+          className="text-sm font-medium text-teal-600 hover:text-teal-700 hover:underline"
+        >
+          ← Back to homepage
+        </Link>
+      </nav>
+      <Link
+        href="/advertise"
+        className="mb-4 flex items-center justify-center gap-2 rounded-full bg-teal-600 px-5 py-3 text-center text-sm font-semibold text-white shadow-md transition hover:bg-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
+        aria-label="View featured listing pricing and benefits"
+      >
+        Get your facility featured — view pricing &amp; benefits →
+      </Link>
+
+      <section
+        className="rounded-2xl px-5 py-6 text-white shadow-lg ring-1 ring-amber-200/40 sm:px-8 sm:py-8"
+        style={{ backgroundColor: HERO_BG }}
+      >
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/90">
+          State overview
+        </p>
+        <h1 className="mt-2 font-heading text-3xl font-semibold sm:text-4xl">
+          Daycare, Preschool & Childcare in {stateName}
         </h1>
-        <div className="mt-4 space-y-3 text-slate-600">
-          <p className="leading-relaxed">
-            {stateName} is home to {facilities.length.toLocaleString()} daycare centers, preschools,
-            and childcare providers across {cities.length} {cities.length === 1 ? "city" : "cities"}.
-            {cityPhrase ? (
-              <>
-                {" "}
-                From {cityPhrase}, parents across {stateName} have access to a wide range of
-                licensed childcare options including {careTypePhrase}.
-              </>
-            ) : (
-              <>
-                {" "}
-                Parents across {stateName} have access to a wide range of licensed childcare
-                options including {careTypePhrase}.
-              </>
-            )}
-          </p>
-          <p className="leading-relaxed">
-            Use our directory to browse by city, compare ratings, and find the right fit for your
-            family. Select a city below to see all licensed facilities, or explore our recommended
-            and review-carefully lists to narrow your search.
-          </p>
+        <p className="mt-3 max-w-2xl text-sm text-white/90">
+          {stateName} is home to {facilities.length.toLocaleString()} daycare centers, preschools,
+          and childcare providers across {cities.length} {cities.length === 1 ? "city" : "cities"}.
+          {cityPhrase ? (
+            <> From {cityPhrase}, parents have access to licensed options including {careTypePhrase}.</>
+          ) : (
+            <> Parents have access to licensed options including {careTypePhrase}.</>
+          )}{" "}
+          Use this page to browse by city, compare ratings, and find the right fit for your family.
+        </p>
+        <div className="mt-5 grid gap-4 text-sm sm:grid-cols-3">
+          <div className="rounded-xl p-4 ring-1 ring-white/10" style={{ backgroundColor: HERO_SOFT }}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+              Facilities listed
+            </p>
+            <p className="mt-1 text-2xl font-semibold">{facilities.length.toLocaleString()}</p>
+          </div>
+          <div className="rounded-xl p-4 ring-1 ring-white/10" style={{ backgroundColor: HERO_SOFT }}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+              Cities covered
+            </p>
+            <p className="mt-1 text-2xl font-semibold">{cities.length}</p>
+          </div>
+          <div className="rounded-xl p-4 ring-1 ring-white/10" style={{ backgroundColor: HERO_SOFT }}>
+            <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+              Average rating
+            </p>
+            <p className="mt-1 flex items-baseline gap-2 text-2xl font-semibold">
+              {hasRating ? averageRating?.toFixed(1) : "—"}
+              {hasRating && (
+                <span className="text-xs font-medium text-amber-200/90">/ 5 stars</span>
+              )}
+            </p>
+          </div>
         </div>
+      </section>
 
-        {/* Care type breakdown */}
-        {Object.keys(breakdown).length > 0 && (
-          <section className="mt-8">
-            <h2 className="font-heading text-lg font-semibold text-slate-800">Care types</h2>
-            <ul className="mt-2 flex flex-wrap gap-3">
-              {Object.entries(breakdown)
-                .sort((a, b) => b[1] - a[1])
-                .map(([type, count]) => (
-                  <li
-                    key={type}
-                    className="rounded-lg bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm ring-1 ring-teal-200/60"
-                  >
-                    {type}: {count}
-                  </li>
-                ))}
-            </ul>
-          </section>
-        )}
-
-        {/* Recommended vs Review Carefully */}
-        <section className="mt-10">
-          <h2 className="font-heading text-lg font-semibold text-slate-800">By rating</h2>
-          <p className="mt-1 text-sm text-slate-600">
-            Recommended = rating ≥ {RECOMMENDED_RATING_THRESHOLD}. Review carefully = lower or no rating.
+      {featuredFacilities.length > 0 && (
+        <section className="mt-8 space-y-4 rounded-2xl border-2 border-teal-200 bg-teal-50/50 p-6">
+          <h2 className="inline-block border-b border-teal-300 pb-1 text-sm font-semibold uppercase tracking-[0.18em] text-teal-800">
+            Top Picks in {stateName}
+          </h2>
+          <p className="text-sm text-slate-600">
+            Featured facilities in {stateName} — verified listings with priority placement.
           </p>
-          <div className="mt-4 grid gap-6 sm:grid-cols-2">
-            <div>
-              <h3 className="font-medium text-emerald-800">
-                Recommended ({recommended.length})
-              </h3>
-              <ul className="mt-2 space-y-2">
-                {recommended.slice(0, 10).map((f) => (
-                  <li key={`${f.name}-${f.city}`}>
-                    <Link
-                      href={`/${stateSlug}/${slugify(f.city)}`}
-                      className="text-teal-700 hover:underline"
-                    >
-                      {f.name}, {f.city}
-                    </Link>
-                  </li>
-                ))}
-                {recommended.length > 10 && (
-                  <li className="text-sm text-slate-500">
-                    +{recommended.length - 10} more in city pages
-                  </li>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-medium text-amber-800">
-                Review carefully ({reviewCarefully.length})
-              </h3>
-              <ul className="mt-2 space-y-2">
-                {reviewCarefully.slice(0, 10).map((f) => (
-                  <li key={`${f.name}-${f.city}`}>
-                    <Link
-                      href={`/${stateSlug}/${slugify(f.city)}`}
-                      className="text-teal-700 hover:underline"
-                    >
-                      {f.name}, {f.city}
-                    </Link>
-                  </li>
-                ))}
-                {reviewCarefully.length > 10 && (
-                  <li className="text-sm text-slate-500">
-                    +{reviewCarefully.length - 10} more in city pages
-                  </li>
-                )}
-              </ul>
-            </div>
+          <div className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {featuredFacilities.map((f) => (
+              <FacilityCard key={`${f.name}-${f.city}-${f.address}`} facility={f} showBadge />
+            ))}
           </div>
         </section>
+      )}
 
-        {/* City listing */}
-        <section className="mt-10">
-          <h2 className="font-heading text-lg font-semibold text-slate-800">Cities</h2>
-          <ul className="mt-4 flex flex-wrap gap-3">
+      <section className="mt-8 space-y-4 rounded-2xl border-2 border-teal-200/80 bg-teal-50/30 p-6">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 className="inline-block border-b-2 border-teal-400/50 pb-1 text-sm font-semibold uppercase tracking-[0.18em] text-teal-900">
+              Daycare & Childcare by City in {stateName}
+            </h2>
+            <p className="mt-1 max-w-2xl text-sm text-slate-600">
+              Choose a city to view all listed daycare centers, preschools, and childcare providers.
+            </p>
+          </div>
+          <div className="text-xs text-slate-500">
+            <Link href="/" className="text-teal-600 hover:text-teal-700">
+              Back to homepage
+            </Link>
+          </div>
+        </div>
+
+        {cities.length === 0 ? (
+          <p className="text-sm text-slate-600">
+            We don&apos;t have facilities listed for {stateName} yet. As new data becomes available,
+            cities and facilities will appear here.
+          </p>
+        ) : (
+          <div className="mt-4 grid gap-3 sm:grid-cols-2 md:grid-cols-3">
             {cities.map((city) => (
-              <li key={city.slug}>
-                <Link
-                  href={`/${stateSlug}/${city.slug}`}
-                  className="rounded-lg bg-white px-4 py-2 text-teal-700 shadow-sm ring-1 ring-teal-200/60 hover:bg-teal-50 hover:ring-teal-300"
+              <Link
+                key={city.slug}
+                href={`/${stateSlug}/${city.slug}`}
+                className="group flex items-center justify-between rounded-lg border border-slate-200 border-l-[3px] bg-white px-3 py-2 text-sm text-teal-900 shadow-sm transition hover:border-teal-500 hover:bg-teal-700 hover:text-white"
+                style={{ borderLeftColor: BORDER_LEFT }}
+              >
+                <div className="flex flex-col">
+                  <span className="font-medium">{city.name}</span>
+                  <span className="text-xs text-slate-600 group-hover:text-white/85">
+                    {city.count.toLocaleString()}{" "}
+                    {city.count === 1 ? "facility" : "facilities"}
+                  </span>
+                </div>
+                <span
+                  className="rounded-full px-2.5 py-1 text-xs font-bold text-white"
+                  style={{ backgroundColor: ACCENT_TEAL }}
                 >
-                  {city.name} ({city.count})
-                </Link>
-              </li>
+                  {city.averageRating ? `${city.averageRating.toFixed(1)}★` : "N/A"}
+                </span>
+              </Link>
             ))}
-          </ul>
-        </section>
-
-        {/* Sample facility cards (first 6) */}
-        {facilities.length > 0 && (
-          <section className="mt-10">
-            <h2 className="font-heading text-lg font-semibold text-slate-800">Sample listings</h2>
-            <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {facilities.slice(0, 6).map((f) => (
-                <FacilityCard key={`${f.name}-${f.city}-${f.address}`} facility={f} showBadge />
-              ))}
-            </div>
-          </section>
+          </div>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

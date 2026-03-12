@@ -53,20 +53,61 @@ export function getAllFacilities(): Facility[] {
 }
 
 export function getCitiesForState(stateSlug: string): { slug: string; name: string; count: number }[] {
+  const withRating = getCitiesForStateWithRating(stateSlug);
+  return withRating.map(({ slug, name, count }) => ({ slug, name, count }));
+}
+
+/** Cities with facility count and average rating (for state page city grid). */
+export function getCitiesForStateWithRating(
+  stateSlug: string
+): { slug: string; name: string; count: number; averageRating: number | null }[] {
   const facilities = getFacilitiesForState(stateSlug);
-  const byCity = new Map<string, { name: string; count: number }>();
+  const byCity = new Map<
+    string,
+    { name: string; count: number; sumRating: number; countWithRating: number }
+  >();
   for (const f of facilities) {
     const slug = slugify(f.city);
     const existing = byCity.get(slug);
+    const rating = f.rating != null && !Number.isNaN(f.rating) ? f.rating : null;
     if (existing) {
       existing.count += 1;
+      if (rating !== null) {
+        existing.sumRating += rating;
+        existing.countWithRating += 1;
+      }
     } else {
-      byCity.set(slug, { name: f.city, count: 1 });
+      byCity.set(slug, {
+        name: f.city,
+        count: 1,
+        sumRating: rating ?? 0,
+        countWithRating: rating !== null ? 1 : 0,
+      });
     }
   }
   return Array.from(byCity.entries())
-    .map(([slug, { name, count }]) => ({ slug, name, count }))
+    .map(([slug, { name, count, sumRating, countWithRating }]) => ({
+      slug,
+      name,
+      count,
+      averageRating:
+        countWithRating > 0 ? Math.round((sumRating / countWithRating) * 10) / 10 : null,
+    }))
     .sort((a, b) => a.name.localeCompare(b.name));
+}
+
+/** Other cities in state (exclude current city), for city page "Other cities" section. */
+export function getOtherCitiesInState(
+  stateSlug: string,
+  currentCitySlug: string,
+  limit: number
+): { slug: string; name: string; count: number }[] {
+  const cities = getCitiesForState(stateSlug);
+  return cities
+    .filter((c) => c.slug !== currentCitySlug)
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit)
+    .map((c) => ({ slug: c.slug, name: c.name, count: c.count }));
 }
 
 export function getFacilitiesForCity(stateSlug: string, citySlug: string): Facility[] {
