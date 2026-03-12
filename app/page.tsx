@@ -112,9 +112,77 @@ export default function HomePage() {
 
   return (
     <div className="bg-gradient-to-b from-sky-50/80 to-emerald-50/50">
-      {/* Hero */}
-      <section className="border-b border-sky-200/60 bg-white/60 px-4 py-14 sm:px-6 sm:py-20">
-        <div className="mx-auto max-w-3xl text-center">
+      {/* Hero — warm gradient + subtle decorative background */}
+      <section className="relative overflow-hidden border-b border-sky-200/60 px-4 py-14 sm:px-6 sm:py-20">
+        {/* Warm gradient: light sky blue → soft yellow-white */}
+        <div
+          className="absolute inset-0 -z-10"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(224, 242, 254, 0.95) 0%, rgba(255, 251, 235, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%)",
+          }}
+        />
+        {/* Subtle watermark-style SVG decorations (8–12% opacity) */}
+        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
+          {/* Star */}
+          <svg
+            className="absolute left-[10%] top-[20%] h-8 w-8 text-sky-600"
+            style={{ opacity: 0.1 }}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
+          </svg>
+          {/* Small star */}
+          <svg
+            className="absolute right-[15%] top-[25%] h-5 w-5 text-amber-600"
+            style={{ opacity: 0.08 }}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
+          </svg>
+          {/* ABC block — simple flat square */}
+          <svg
+            className="absolute bottom-[30%] left-[8%] h-9 w-9 text-sky-500"
+            style={{ opacity: 0.11 }}
+            viewBox="0 0 32 32"
+            fill="currentColor"
+          >
+            <rect x="4" y="8" width="24" height="20" rx="2" transform="rotate(-4 16 18)" />
+          </svg>
+          {/* Crayon — simple flat shape */}
+          <svg
+            className="absolute right-[12%] bottom-[25%] h-5 w-5 text-rose-400"
+            style={{ opacity: 0.1 }}
+            viewBox="0 0 20 24"
+            fill="currentColor"
+          >
+            <path d="M2 2h16l-3 20H5L2 2z" />
+          </svg>
+          {/* Schoolhouse */}
+          <svg
+            className="absolute left-[75%] top-[15%] h-12 w-12 text-sky-600"
+            style={{ opacity: 0.09 }}
+            viewBox="0 0 48 48"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.2"
+          >
+            <path d="M24 4L4 16v24h12V28h16v12h12V16L24 4z" />
+            <path d="M24 4v12M4 16l20-12 20 12" />
+          </svg>
+          {/* Second star */}
+          <svg
+            className="absolute right-[25%] bottom-[35%] h-6 w-6 text-amber-500"
+            style={{ opacity: 0.08 }}
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
+          </svg>
+        </div>
+        <div className="relative z-10 mx-auto max-w-3xl text-center">
           <h1 className="text-3xl font-bold tracking-tight text-sky-900 sm:text-4xl md:text-5xl">
             Daycare Directories
           </h1>
