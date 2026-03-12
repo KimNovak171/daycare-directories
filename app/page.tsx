@@ -4,6 +4,7 @@ import {
   getAllFacilities,
   getFeaturedFacilities,
   getFacilitiesForState,
+  getCitiesForState,
 } from "@/lib/data";
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
@@ -69,13 +70,6 @@ const EXAMPLE_FACILITIES: Facility[] = [
   },
 ];
 
-const STATE_CARD_COLORS = [
-  "bg-amber-50/90 border-amber-200/70",
-  "bg-sky-50/90 border-sky-200/70",
-  "bg-emerald-50/90 border-emerald-200/70",
-  "bg-orange-50/90 border-orange-200/70",
-] as const;
-
 function FeaturedCard({ f }: { f: Facility }) {
   const mapsUrl = `https://www.google.com/maps?q=${f.latitude},${f.longitude}`;
   const careDisplay = getCareTypeDisplay(f.care_type);
@@ -123,132 +117,113 @@ function FeaturedCard({ f }: { f: Facility }) {
   );
 }
 
+const HERO_BG = "#0f766e";
+const HERO_SOFT = "rgba(13, 148, 136, 0.2)";
+
 export default function HomePage() {
   const stateSlugs = getStateSlugs();
   const allFacilities = getAllFacilities();
   const totalFacilities = allFacilities.length;
   const totalStates = stateSlugs.length;
+  const totalCities = stateSlugs.reduce(
+    (acc, slug) => acc + getCitiesForState(slug).length,
+    0
+  );
   const featured = getFeaturedFacilities(3);
   const showFeatured = featured.length > 0 ? featured : EXAMPLE_FACILITIES;
 
   return (
-    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
-      {/* Hero — warm gradient + subtle decorative background */}
-      <section className="relative overflow-hidden border-b border-teal-200/60 px-4 py-14 sm:px-6 sm:py-20">
-        {/* Warm gradient: light sky blue → soft yellow-white */}
-        <div
-          className="absolute inset-0 -z-10"
-          style={{
-            background:
-              "linear-gradient(180deg, rgba(224, 242, 254, 0.95) 0%, rgba(255, 251, 235, 0.9) 50%, rgba(255, 255, 255, 0.95) 100%)",
-          }}
-        />
-        {/* Subtle watermark-style SVG decorations (10–15% opacity) */}
-        <div className="pointer-events-none absolute inset-0 -z-10" aria-hidden>
-          {/* Star */}
-          <svg
-            className="absolute left-[10%] top-[20%] h-8 w-8 text-teal-600"
-            style={{ opacity: 0.12 }}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
-          </svg>
-          {/* Small star */}
-          <svg
-            className="absolute right-[15%] top-[25%] h-5 w-5 text-amber-600"
-            style={{ opacity: 0.1 }}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
-          </svg>
-          {/* ABC block — simple flat square */}
-          <svg
-            className="absolute bottom-[30%] left-[8%] h-9 w-9 text-teal-500"
-            style={{ opacity: 0.12 }}
-            viewBox="0 0 32 32"
-            fill="currentColor"
-          >
-            <rect x="4" y="8" width="24" height="20" rx="2" transform="rotate(-4 16 18)" />
-          </svg>
-          {/* Crayon — simple flat shape */}
-          <svg
-            className="absolute right-[12%] bottom-[25%] h-5 w-5 text-rose-400"
-            style={{ opacity: 0.12 }}
-            viewBox="0 0 20 24"
-            fill="currentColor"
-          >
-            <path d="M2 2h16l-3 20H5L2 2z" />
-          </svg>
-          {/* Schoolhouse */}
-          <svg
-            className="absolute left-[75%] top-[15%] h-12 w-12 text-teal-600"
-            style={{ opacity: 0.11 }}
-            viewBox="0 0 48 48"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.2"
-          >
-            <path d="M24 4L4 16v24h12V28h16v12h12V16L24 4z" />
-            <path d="M24 4v12M4 16l20-12 20 12" />
-          </svg>
-          {/* Second star */}
-          <svg
-            className="absolute right-[25%] bottom-[35%] h-6 w-6 text-amber-500"
-            style={{ opacity: 0.1 }}
-            viewBox="0 0 24 24"
-            fill="currentColor"
-          >
-            <path d="M12 2l2.4 7.4h7.6l-6 4.6 2.3 7-6.3-4.5-6.3 4.5 2.3-7-6-4.6h7.6z" />
-          </svg>
-        </div>
-        <div className="relative z-10 mx-auto max-w-3xl text-center">
-          <h1 className="font-heading text-3xl font-bold tracking-tight text-teal-900 sm:text-4xl md:text-5xl">
-            Daycare Directories
-          </h1>
-          <p className="mt-4 text-lg text-slate-600 sm:text-xl">
-            Find the Perfect Childcare for Your Family — City by City
-          </p>
-          <p className="mt-6 text-slate-600">
-            Search or browse daycare centers, preschools, and childcare providers
-            by state and city. Compare ratings and find the right fit for your family.
-          </p>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <div className="flex flex-wrap justify-center gap-8 rounded-2xl bg-white/80 px-6 py-6 shadow-sm ring-1 ring-teal-200/60">
-          <div className="text-center">
-            <p className="font-heading text-3xl font-bold text-teal-700">{totalFacilities.toLocaleString()}</p>
-            <p className="text-sm text-slate-600">Facilities</p>
+    <div className="bg-slate-50 text-slate-900">
+      {/* Hero — dark teal, white headline, strong contrast */}
+      <section
+        className="relative overflow-hidden px-4 py-14 sm:px-6 sm:py-20"
+        style={{ backgroundColor: HERO_BG }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="space-y-6 text-white">
+            <p className="inline-flex rounded-full px-3 py-1 text-xs font-medium uppercase tracking-[0.2em] text-amber-200 ring-1 ring-amber-200/40">
+              Daycare Directories
+            </p>
+            <h1 className="font-heading text-balance text-3xl font-semibold leading-tight sm:text-4xl lg:text-5xl">
+              Find the Perfect Childcare for Your Family — City by City
+            </h1>
+            <p className="max-w-2xl text-balance text-sm text-white/90 sm:text-base">
+              Search or browse daycare centers, preschools, and childcare providers by state and
+              city. Compare ratings and find the right fit for your family.
+            </p>
           </div>
-          <div className="text-center">
-            <p className="font-heading text-3xl font-bold text-teal-700">{totalStates}</p>
-            <p className="text-sm text-slate-600">States Covered</p>
+
+          {/* Stats bar — inside hero, large bold white/amber numbers */}
+          <div className="mt-8 grid w-full grid-cols-3 gap-4 rounded-2xl border-2 border-amber-200/40 p-6 shadow-xl sm:gap-6">
+            <div
+              className="rounded-xl p-4 text-center ring-1 ring-white/10"
+              style={{ backgroundColor: HERO_SOFT }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+                Facilities
+              </p>
+              <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">
+                {totalFacilities.toLocaleString()}
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-4 text-center ring-1 ring-white/10"
+              style={{ backgroundColor: HERO_SOFT }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+                States Covered
+              </p>
+              <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">
+                {totalStates}
+              </p>
+            </div>
+            <div
+              className="rounded-xl p-4 text-center ring-1 ring-white/10"
+              style={{ backgroundColor: HERO_SOFT }}
+            >
+              <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
+                Cities Covered
+              </p>
+              <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">
+                {totalCities.toLocaleString()}
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* State cards */}
+      {/* State cards — bold heading, bullet-separated state links, cards with count + border + hover */}
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <h2 className="font-heading text-xl font-semibold text-slate-800">Browse by State</h2>
+        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+          Browse by State
+        </h2>
         <p className="mt-1 text-slate-600">
           Select a state to see cities and daycare listings.
         </p>
+        <p className="mt-3 text-sm font-medium text-slate-600">
+          {US_STATES.map((stateName) => (
+            <span key={stateName}>
+              <Link
+                href={`/${stateToSlug(stateName)}`}
+                className="text-teal-600 underline underline-offset-2 hover:text-teal-700"
+              >
+                {stateName}
+              </Link>
+              {stateName !== US_STATES[US_STATES.length - 1] ? " • " : ""}
+            </span>
+          ))}
+        </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {US_STATES.map((stateName, index) => {
+          {US_STATES.map((stateName) => {
             const slug = stateToSlug(stateName);
             const count = getFacilitiesForState(slug).length;
-            const colorClass = STATE_CARD_COLORS[index % STATE_CARD_COLORS.length];
             return (
               <Link
                 key={stateName}
                 href={`/${slug}`}
-                className={`rounded-xl border p-5 shadow-sm transition hover:shadow-md ${colorClass}`}
+                className="rounded-xl border-2 border-teal-200 bg-white p-5 shadow-md transition hover:border-teal-500 hover:bg-teal-50/50"
               >
-                <span className="font-heading font-medium text-slate-800">{stateName}</span>
+                <p className="font-heading text-lg font-semibold text-slate-800">{stateName}</p>
                 <p className="mt-1 text-sm text-slate-600">
                   {count.toLocaleString()} {count === 1 ? "facility" : "facilities"}
                 </p>
@@ -323,26 +298,6 @@ export default function HomePage() {
             </div>
           </li>
         </ol>
-      </section>
-
-      {/* Text list of all states */}
-      <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
-        <h2 className="font-heading text-xl font-semibold text-slate-800">All States (A–Z)</h2>
-        <ul className="mt-4 flex flex-wrap gap-x-3 gap-y-2 text-sm">
-          {US_STATES.map((stateName) => (
-            <li key={stateName}>
-              <Link
-                href={`/${stateToSlug(stateName)}`}
-                className="text-teal-700 hover:underline"
-              >
-                {stateName}
-              </Link>
-              <span className="text-slate-300">
-                {stateName !== US_STATES[US_STATES.length - 1] ? " | " : ""}
-              </span>
-            </li>
-          ))}
-        </ul>
       </section>
 
       {/* Canada */}
