@@ -5,6 +5,7 @@ import {
   getFeaturedFacilities,
   getFacilitiesForState,
   getCitiesForState,
+  slugify,
 } from "@/lib/data";
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
@@ -22,50 +23,45 @@ export const metadata = {
   },
 };
 
-const EXAMPLE_FACILITIES: Facility[] = [
+/** Static placeholder featured cards until paid featured listings are set up. */
+const FEATURED_PLACEHOLDER_FACILITIES: Facility[] = [
   {
-    name: "Sunshine Kids Learning Center",
-    address: "123 Main St",
+    name: "Chabad Chayil",
+    address: "2601 NE 211th Terrace, Miami, FL 33180",
     city: "Miami",
     state: "Florida",
-    phone: "(305) 555-0100",
-    website: "https://example.com",
-    rating: 4.5,
-    reviews: 24,
-    care_type: "Day Care Center",
-    recommended: true,
-    latitude: 25.7617,
-    longitude: -80.1918,
-    featured: true,
-  },
-  {
-    name: "Little Stars Preschool",
-    address: "456 Oak Ave",
-    city: "Orlando",
-    state: "Florida",
-    phone: "(407) 555-0200",
-    website: "https://example.com",
-    rating: 4.2,
-    reviews: 18,
+    phone: "305-770-1919",
+    website: "http://chabadchayil.org/",
+    rating: 5.0,
+    reviews: 318,
     care_type: "Preschool",
     recommended: true,
-    latitude: 28.5383,
-    longitude: -81.3792,
     featured: true,
   },
   {
-    name: "Happy Tots Childcare",
-    address: "789 Pine Rd",
-    city: "Tampa",
+    name: "Little Wonders Learning Academy & Preschool",
+    address: "9360 SW 164th St, Miami, FL 33157",
+    city: "Miami",
     state: "Florida",
-    phone: "(813) 555-0300",
-    website: "https://example.com",
+    phone: "305-253-7451",
+    website: "http://www.littlewonderslearningacademy.com/",
     rating: 4.8,
-    reviews: 31,
-    care_type: "Day Care Center",
+    reviews: 191,
+    care_type: "Day care center",
     recommended: true,
-    latitude: 27.9506,
-    longitude: -82.4572,
+    featured: true,
+  },
+  {
+    name: "Household Staffing",
+    address: "276 5th Ave Suite 704, New York, NY 10001",
+    city: "New York",
+    state: "New York",
+    phone: "212-600-2085",
+    website: "https://householdstaffing.com/",
+    rating: 4.9,
+    reviews: 331,
+    care_type: "Child care agency",
+    recommended: true,
     featured: true,
   },
 ];
@@ -77,6 +73,7 @@ function FeaturedCard({ f }: { f: Facility }) {
       : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
           [f.address, f.city, f.state].filter(Boolean).join(", ")
         )}`;
+  const directoryUrl = `/${stateToSlug(f.state)}/${slugify(f.city)}`;
   const careDisplay = getCareTypeDisplay(f.care_type);
   return (
     <article className="rounded-xl border border-teal-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
@@ -89,7 +86,7 @@ function FeaturedCard({ f }: { f: Facility }) {
         </span>
       </div>
       <h3 className="font-heading font-semibold text-slate-800">{f.name}</h3>
-      <p className="mt-1 text-sm text-slate-500">{f.address}, {f.city}, {f.state}</p>
+      <p className="mt-1 text-sm text-slate-500">{f.address}</p>
       <div className="mt-3 flex flex-wrap gap-2 text-sm">
         {f.phone && (
           <a href={`tel:${f.phone}`} className="text-teal-600 hover:underline">
@@ -114,6 +111,9 @@ function FeaturedCard({ f }: { f: Facility }) {
         >
           Map
         </a>
+        <Link href={directoryUrl} className="text-teal-600 hover:underline">
+          View in directory
+        </Link>
       </div>
       <p className="mt-2 text-sm text-slate-600">
         ★ {f.rating} ({f.reviews} reviews)
@@ -135,7 +135,7 @@ export default function HomePage() {
     0
   );
   const featured = getFeaturedFacilities(3);
-  const showFeatured = featured.length > 0 ? featured : EXAMPLE_FACILITIES;
+  const showFeatured = featured.length > 0 ? featured : FEATURED_PLACEHOLDER_FACILITIES;
 
   return (
     <div className="bg-slate-50 text-slate-900">
