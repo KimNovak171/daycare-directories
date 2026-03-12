@@ -20,8 +20,8 @@ export interface Facility {
   reviews: number;
   care_type: CareType | string;
   recommended: boolean;
-  latitude: number;
-  longitude: number;
+  latitude?: number;
+  longitude?: number;
   featured?: boolean;
   premium?: boolean;
 }

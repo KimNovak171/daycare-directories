@@ -71,7 +71,12 @@ const EXAMPLE_FACILITIES: Facility[] = [
 ];
 
 function FeaturedCard({ f }: { f: Facility }) {
-  const mapsUrl = `https://www.google.com/maps?q=${f.latitude},${f.longitude}`;
+  const mapsUrl =
+    f.latitude != null && f.longitude != null
+      ? `https://www.google.com/maps?q=${f.latitude},${f.longitude}`
+      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          [f.address, f.city, f.state].filter(Boolean).join(", ")
+        )}`;
   const careDisplay = getCareTypeDisplay(f.care_type);
   return (
     <article className="rounded-xl border border-teal-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
