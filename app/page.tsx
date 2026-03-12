@@ -12,6 +12,15 @@ import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
 // Ensure homepage is statically generated at build time (fixes 404 on Vercel)
 export const dynamic = "force-static";
 
+export const metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: "/",
+    siteName: "Daycare Directories",
+    type: "website",
+  },
+};
+
 const EXAMPLE_FACILITIES: Facility[] = [
   {
     name: "Sunshine Kids Learning Center",

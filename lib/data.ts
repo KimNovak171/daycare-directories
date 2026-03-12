@@ -98,3 +98,20 @@ export function getFeaturedFacilities(limit = 3): Facility[] {
   const featured = all.filter((f) => f.featured || (f.rating >= 3 && f.reviews > 0));
   return featured.slice(0, limit);
 }
+
+/** Top N cities by facility count (for state page intro). */
+export function getTopCitiesForState(
+  stateSlug: string,
+  limit: number
+): { name: string; slug: string; count: number }[] {
+  const cities = getCitiesForState(stateSlug);
+  return [...cities].sort((a, b) => b.count - a.count).slice(0, limit);
+}
+
+/** Top care type names by count (for intro copy). */
+export function getTopCareTypes(breakdown: Record<string, number>, limit: number): string[] {
+  return Object.entries(breakdown)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, limit)
+    .map(([name]) => name);
+}

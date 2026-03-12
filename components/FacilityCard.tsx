@@ -13,8 +13,34 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
   const mapsUrl = `https://www.google.com/maps?q=${facility.latitude},${facility.longitude}`;
   const careDisplay = getCareTypeDisplay(facility.care_type);
 
+  const localBusinessSchema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: facility.name,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: facility.address,
+      addressLocality: facility.city,
+      addressRegion: facility.state,
+    },
+    ...(facility.phone && { telephone: facility.phone }),
+    ...(facility.website && { url: facility.website }),
+    ...(facility.rating != null &&
+      (facility.reviews ?? 0) > 0 && {
+        aggregateRating: {
+          "@type": "AggregateRating",
+          ratingValue: facility.rating,
+          reviewCount: facility.reviews ?? 0,
+        },
+      }),
+  };
+
   return (
     <article className="rounded-xl border border-teal-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }}
+      />
       <div className="mb-2 flex flex-wrap items-center gap-2">
         {facility.featured && (
           <span className="rounded-full bg-amber-400/80 px-2.5 py-0.5 text-xs font-semibold text-amber-950">
