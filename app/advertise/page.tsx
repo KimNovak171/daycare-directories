@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata = {
   title: "Advertise Your Daycare | Daycare Directories",
@@ -8,10 +7,7 @@ export const metadata = {
 };
 
 const FEATURED_PAYMENT_LINK = "https://buy.stripe.com/eVqcN5fiGgaba4eaLDfAc02";
-const FEATURED_BUY_BUTTON_ID = "buy_btn_1TAGpaF3f6ZqC3t86jNjyiVC";
-
 const PREMIUM_PAYMENT_LINK = "https://buy.stripe.com/9B628r2vU1fh1xI6vnfAc03";
-const PREMIUM_BUY_BUTTON_ID = "buy_btn_1TAGqoF3f6ZqC3t8hklul1Jg";
 
 export default function AdvertisePage() {
   return (
@@ -46,15 +42,14 @@ export default function AdvertisePage() {
               <li>Eligible for homepage Featured Daycare Centers</li>
               <li>Website and contact details highlighted</li>
             </ul>
-            <div className="mt-6 flex flex-col gap-3">
-              <StripeBuyButton buyButtonId={FEATURED_BUY_BUTTON_ID} />
+            <div className="mt-6">
               <a
                 href={FEATURED_PAYMENT_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-center text-sm font-medium text-teal-600 underline underline-offset-2 hover:text-teal-700"
+                className="inline-block rounded-full bg-teal-500 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
               >
-                Open payment link
+                Get Featured — $49/month
               </a>
             </div>
           </section>
@@ -79,15 +74,14 @@ export default function AdvertisePage() {
               <li>Extended profile with photos and description</li>
               <li>Priority support and listing updates</li>
             </ul>
-            <div className="mt-6 flex flex-col gap-3">
-              <StripeBuyButton buyButtonId={PREMIUM_BUY_BUTTON_ID} />
+            <div className="mt-6">
               <a
                 href={PREMIUM_PAYMENT_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-center text-sm font-medium text-teal-600 underline underline-offset-2 hover:text-teal-700"
+                className="inline-block rounded-full bg-teal-500 px-5 py-2.5 font-medium text-white shadow-sm transition hover:bg-teal-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 focus-visible:ring-offset-2"
               >
-                Open payment link
+                Get Premium — $99/month
               </a>
             </div>
           </section>
