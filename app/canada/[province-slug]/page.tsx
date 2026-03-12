@@ -35,20 +35,20 @@ export default async function CanadaProvincePage({
   const provinceName = slugToProvinceName(provinceSlug);
 
   return (
-    <div className="bg-gradient-to-b from-sky-50/80 to-emerald-50/50">
+    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <nav className="mb-6 text-sm text-slate-600">
-          <Link href="/" className="hover:text-sky-600 hover:underline">
+          <Link href="/" className="hover:text-teal-600 hover:underline">
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link href="/canada" className="hover:text-sky-600 hover:underline">
+          <Link href="/canada" className="hover:text-teal-600 hover:underline">
             Canada
           </Link>
           <span className="mx-2">/</span>
           <span className="text-slate-800">{provinceName}</span>
         </nav>
-        <h1 className="text-3xl font-bold text-sky-900">
+        <h1 className="font-heading text-3xl font-bold text-teal-900">
           {provinceName} Daycare & Childcare
         </h1>
         <p className="mt-2 text-slate-600">

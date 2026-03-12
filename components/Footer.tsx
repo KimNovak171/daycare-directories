@@ -6,18 +6,18 @@ export default function Footer() {
   const stateSlugsWithData = getStateSlugs();
 
   return (
-    <footer className="border-t border-sky-200/60 bg-slate-50">
+    <footer className="border-t border-teal-200/60 bg-slate-50">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <Link href="/" className="text-lg font-bold text-sky-800">
+          <Link href="/" className="font-heading text-lg font-bold text-teal-800">
             Daycare Directories
           </Link>
           <p className="text-sm text-slate-600">
-            Find Trusted Childcare — City by City
+            Find the Perfect Childcare for Your Family — City by City
           </p>
         </div>
         <nav className="flex flex-col flex-wrap gap-y-4 text-sm">
-          <h3 className="font-semibold text-slate-800">USA — States & Cities</h3>
+          <h3 className="font-heading font-semibold text-slate-800">USA — States & Cities</h3>
           <ul className="flex flex-col gap-1">
             {US_STATES.map((stateName) => {
               const slug = stateToSlug(stateName);
@@ -27,7 +27,7 @@ export default function Footer() {
                 <li key={slug} className="flex flex-col gap-0.5">
                   <Link
                     href={`/${slug}`}
-                    className="font-medium text-sky-700 hover:underline"
+                    className="font-medium text-teal-700 hover:underline"
                   >
                     {stateName}
                   </Link>
@@ -37,7 +37,7 @@ export default function Footer() {
                         <li key={city.slug} className="inline">
                           <Link
                             href={`/${slug}/${city.slug}`}
-                            className="text-slate-600 hover:text-sky-600 hover:underline"
+                            className="text-slate-600 hover:text-teal-600 hover:underline"
                           >
                             {city.name}
                           </Link>
@@ -55,7 +55,7 @@ export default function Footer() {
           <div className="mt-4 pt-4 border-t border-slate-200">
             <Link
               href="/canada"
-              className="font-medium text-sky-700 hover:underline"
+              className="font-medium text-teal-700 hover:underline"
             >
               Canada
             </Link>
@@ -63,7 +63,7 @@ export default function Footer() {
           <div className="mt-4 pt-4 border-t border-slate-200">
             <Link
               href="/advertise"
-              className="font-medium text-sky-700 hover:underline"
+              className="font-medium text-teal-700 hover:underline"
             >
               Advertise
             </Link>

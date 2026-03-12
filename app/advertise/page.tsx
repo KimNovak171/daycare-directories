@@ -6,16 +6,16 @@ export const metadata = {
 
 export default function AdvertisePage() {
   return (
-    <div className="bg-gradient-to-b from-sky-50/80 to-emerald-50/50">
+    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
       <div className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
-        <h1 className="text-3xl font-bold text-sky-900">Advertise With Us</h1>
+        <h1 className="font-heading text-3xl font-bold text-teal-900">Advertise With Us</h1>
         <p className="mt-4 text-lg text-slate-600">
           Get in front of families searching for trusted childcare. We offer two
           listing options to help your facility stand out.
         </p>
 
         <section className="mt-12">
-          <div className="rounded-2xl border border-sky-200/80 bg-white p-8 shadow-sm">
+          <div className="rounded-2xl border border-teal-200/80 bg-white p-8 shadow-sm">
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-amber-400/80 px-3 py-1 text-sm font-semibold text-amber-950">
                 Featured
@@ -37,9 +37,9 @@ export default function AdvertisePage() {
         </section>
 
         <section className="mt-10">
-          <div className="rounded-2xl border border-sky-200/80 bg-white p-8 shadow-sm">
+          <div className="rounded-2xl border border-teal-200/80 bg-white p-8 shadow-sm">
             <div className="flex items-center gap-2">
-              <span className="rounded-full bg-sky-500/90 px-3 py-1 text-sm font-semibold text-white">
+              <span className="rounded-full bg-teal-500/90 px-3 py-1 text-sm font-semibold text-white">
                 Premium
               </span>
               <h2 className="text-2xl font-semibold text-slate-800">

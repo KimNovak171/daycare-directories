@@ -1,5 +1,6 @@
 import type { Facility } from "@/lib/types";
 import { RECOMMENDED_RATING_THRESHOLD } from "@/lib/types";
+import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
 
 interface FacilityCardProps {
   facility: Facility;
@@ -10,9 +11,10 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
   const recommended =
     (facility.rating ?? 0) >= RECOMMENDED_RATING_THRESHOLD && facility.rating != null;
   const mapsUrl = `https://www.google.com/maps?q=${facility.latitude},${facility.longitude}`;
+  const careDisplay = getCareTypeDisplay(facility.care_type);
 
   return (
-    <article className="rounded-xl border border-sky-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
+    <article className="rounded-xl border border-teal-200/80 bg-white p-5 shadow-sm transition hover:shadow-md">
       <div className="mb-2 flex flex-wrap items-center gap-2">
         {facility.featured && (
           <span className="rounded-full bg-amber-400/80 px-2.5 py-0.5 text-xs font-semibold text-amber-950">
@@ -29,15 +31,17 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
               Review Carefully
             </span>
           ))}
+        <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${careDisplay.badgeClass}`}>
+          {careDisplay.emoji} {careDisplay.label}
+        </span>
       </div>
-      <h3 className="font-semibold text-slate-800">{facility.name}</h3>
-      <p className="mt-1 text-sm text-slate-600">{facility.care_type}</p>
+      <h3 className="font-heading font-semibold text-slate-800">{facility.name}</h3>
       <p className="mt-1 text-sm text-slate-500">
         {facility.address}, {facility.city}, {facility.state}
       </p>
       <div className="mt-3 flex flex-wrap gap-3 text-sm">
         {facility.phone && (
-          <a href={`tel:${facility.phone}`} className="text-sky-600 hover:underline">
+          <a href={`tel:${facility.phone}`} className="text-teal-600 hover:underline">
             {facility.phone}
           </a>
         )}
@@ -46,7 +50,7 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
             href={facility.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sky-600 hover:underline"
+            className="text-teal-600 hover:underline"
           >
             Website
           </a>
@@ -55,7 +59,7 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
           href={mapsUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sky-600 hover:underline"
+          className="text-teal-600 hover:underline"
         >
           Map
         </a>

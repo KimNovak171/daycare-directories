@@ -55,20 +55,20 @@ export default async function CityPage({
   const facilities = getFacilitiesForCity(stateSlug, citySlug);
 
   return (
-    <div className="bg-gradient-to-b from-sky-50/80 to-emerald-50/50">
+    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
         <nav className="mb-6 text-sm text-slate-600">
-          <Link href="/" className="hover:text-sky-600 hover:underline">
+          <Link href="/" className="hover:text-teal-600 hover:underline">
             Home
           </Link>
           <span className="mx-2">/</span>
-          <Link href={`/${stateSlug}`} className="hover:text-sky-600 hover:underline">
+          <Link href={`/${stateSlug}`} className="hover:text-teal-600 hover:underline">
             {stateName}
           </Link>
           <span className="mx-2">/</span>
           <span className="text-slate-800">{cityName}</span>
         </nav>
-        <h1 className="text-3xl font-bold text-sky-900">
+        <h1 className="font-heading text-3xl font-bold text-teal-900">
           Daycare & Childcare in {cityName}, {stateName}
         </h1>
         <p className="mt-2 text-slate-600">
@@ -78,7 +78,7 @@ export default async function CityPage({
         {facilities.length === 0 ? (
           <p className="mt-8 text-slate-600">
             No facilities listed yet. Check back soon or browse other cities in{" "}
-            <Link href={`/${stateSlug}`} className="text-sky-600 hover:underline">
+            <Link href={`/${stateSlug}`} className="text-teal-600 hover:underline">
               {stateName}
             </Link>
             .

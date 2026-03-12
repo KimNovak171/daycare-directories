@@ -3,9 +3,8 @@
 :root {
   --background: #f8faf9;
   --foreground: #1a2e2a;
-  --accent-blue: #5b9bd5;
-  --accent-green: #6b9b7a;
-  --accent-amber: #e8c547;
+  --accent: #0d9488;
+  --accent-hover: #0f766e;
   --card-bg: #ffffff;
   --muted: #5a6b66;
 }
@@ -15,10 +14,15 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-heading);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.font-heading {
+  font-family: var(--font-heading), var(--font-sans), system-ui, sans-serif;
 }

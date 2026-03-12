@@ -55,9 +55,9 @@ export default async function StatePage({
   );
 
   return (
-    <div className="bg-gradient-to-b from-sky-50/80 to-emerald-50/50">
+    <div className="bg-gradient-to-b from-teal-50/60 to-amber-50/40">
       <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <h1 className="text-3xl font-bold text-sky-900">
+        <h1 className="font-heading text-3xl font-bold text-teal-900">
           {stateName} Daycare & Childcare
         </h1>
         <p className="mt-2 text-slate-600">
@@ -68,14 +68,14 @@ export default async function StatePage({
         {/* Care type breakdown */}
         {Object.keys(breakdown).length > 0 && (
           <section className="mt-8">
-            <h2 className="text-lg font-semibold text-slate-800">Care types</h2>
+            <h2 className="font-heading text-lg font-semibold text-slate-800">Care types</h2>
             <ul className="mt-2 flex flex-wrap gap-3">
               {Object.entries(breakdown)
                 .sort((a, b) => b[1] - a[1])
                 .map(([type, count]) => (
                   <li
                     key={type}
-                    className="rounded-lg bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm ring-1 ring-sky-200/60"
+                    className="rounded-lg bg-white px-3 py-1.5 text-sm text-slate-700 shadow-sm ring-1 ring-teal-200/60"
                   >
                     {type}: {count}
                   </li>
@@ -86,7 +86,7 @@ export default async function StatePage({
 
         {/* Recommended vs Review Carefully */}
         <section className="mt-10">
-          <h2 className="text-lg font-semibold text-slate-800">By rating</h2>
+          <h2 className="font-heading text-lg font-semibold text-slate-800">By rating</h2>
           <p className="mt-1 text-sm text-slate-600">
             Recommended = rating ≥ {RECOMMENDED_RATING_THRESHOLD}. Review carefully = lower or no rating.
           </p>
@@ -100,7 +100,7 @@ export default async function StatePage({
                   <li key={`${f.name}-${f.city}`}>
                     <Link
                       href={`/${stateSlug}/${slugify(f.city)}`}
-                      className="text-sky-700 hover:underline"
+                      className="text-teal-700 hover:underline"
                     >
                       {f.name}, {f.city}
                     </Link>
@@ -122,7 +122,7 @@ export default async function StatePage({
                   <li key={`${f.name}-${f.city}`}>
                     <Link
                       href={`/${stateSlug}/${slugify(f.city)}`}
-                      className="text-sky-700 hover:underline"
+                      className="text-teal-700 hover:underline"
                     >
                       {f.name}, {f.city}
                     </Link>
@@ -140,13 +140,13 @@ export default async function StatePage({
 
         {/* City listing */}
         <section className="mt-10">
-          <h2 className="text-lg font-semibold text-slate-800">Cities</h2>
+          <h2 className="font-heading text-lg font-semibold text-slate-800">Cities</h2>
           <ul className="mt-4 flex flex-wrap gap-3">
             {cities.map((city) => (
               <li key={city.slug}>
                 <Link
                   href={`/${stateSlug}/${city.slug}`}
-                  className="rounded-lg bg-white px-4 py-2 text-sky-700 shadow-sm ring-1 ring-sky-200/60 hover:bg-sky-50 hover:ring-sky-300"
+                  className="rounded-lg bg-white px-4 py-2 text-teal-700 shadow-sm ring-1 ring-teal-200/60 hover:bg-teal-50 hover:ring-teal-300"
                 >
                   {city.name} ({city.count})
                 </Link>
@@ -158,7 +158,7 @@ export default async function StatePage({
         {/* Sample facility cards (first 6) */}
         {facilities.length > 0 && (
           <section className="mt-10">
-            <h2 className="text-lg font-semibold text-slate-800">Sample listings</h2>
+            <h2 className="font-heading text-lg font-semibold text-slate-800">Sample listings</h2>
             <div className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {facilities.slice(0, 6).map((f) => (
                 <FacilityCard key={`${f.name}-${f.city}-${f.address}`} facility={f} showBadge />
