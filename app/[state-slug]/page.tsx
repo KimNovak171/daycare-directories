@@ -24,7 +24,9 @@ export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours ISR
 
 export function generateStaticParams() {
-  return [];
+  return US_STATES.map((stateName) => ({
+    "state-slug": stateToSlug(stateName),
+  }));
 }
 
 export async function generateMetadata({
