@@ -15,16 +15,11 @@ import FacilityCard from "@/components/FacilityCard";
 const VALID_STATE_SLUGS = new Set(US_STATES.map((s) => stateToSlug(s)));
 const SITE_URL = "https://www.daycaredirectories.com";
 
+export const dynamicParams = true;
+export const revalidate = 86400; // 24 hours ISR
+
 export function generateStaticParams() {
-  const params: { "state-slug": string; "city-slug": string }[] = [];
-  for (const stateName of US_STATES) {
-    const stateSlug = stateToSlug(stateName);
-    const cities = getCitiesForState(stateSlug);
-    for (const city of cities) {
-      params.push({ "state-slug": stateSlug, "city-slug": city.slug });
-    }
-  }
-  return params;
+  return [];
 }
 
 export async function generateMetadata({
