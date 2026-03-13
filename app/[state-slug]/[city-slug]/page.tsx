@@ -98,12 +98,15 @@ export default async function CityPage({
   if (!VALID_STATE_SLUGS.has(stateSlug)) {
     notFound();
   }
-  const cityName = getCityNameFromSlug(stateSlug, citySlug);
-  if (!cityName) {
-    notFound();
-  }
+  let cityName = getCityNameFromSlug(stateSlug, citySlug);
   const stateName = getStateNameFromSlug(stateSlug);
   const facilities = getFacilitiesForCity(stateSlug, citySlug);
+  if (!cityName) {
+    cityName = citySlug
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+  }
   const cityBreakdown = getCareTypeBreakdown(facilities);
   const topCareTypes = getTopCareTypes(cityBreakdown, 4);
   const careTypePhrase =
