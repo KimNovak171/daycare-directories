@@ -18,49 +18,45 @@ const SITE_URL = "https://www.daycaredirectories.com";
 export const dynamicParams = true;
 export const revalidate = 86400; // 24 hours ISR — city pages generated on first request
 
-/** Minimal set of city paths so the dynamic route is included in the build; dynamicParams allows all other cities on-demand. */
-const FALLBACK_CITY_PARAMS: { "state-slug": string; "city-slug": string }[] = [
-  { "state-slug": "illinois", "city-slug": "chicago" },
-  { "state-slug": "illinois", "city-slug": "algonquin" },
-  { "state-slug": "illinois", "city-slug": "springfield" },
-  { "state-slug": "virginia", "city-slug": "virginia-beach" },
-  { "state-slug": "virginia", "city-slug": "richmond" },
-  { "state-slug": "maryland", "city-slug": "baltimore" },
-  { "state-slug": "maryland", "city-slug": "annapolis" },
-  { "state-slug": "washington", "city-slug": "seattle" },
-  { "state-slug": "washington", "city-slug": "spokane" },
-  { "state-slug": "massachusetts", "city-slug": "boston" },
-  { "state-slug": "massachusetts", "city-slug": "worcester" },
-  { "state-slug": "florida", "city-slug": "miami" },
-  { "state-slug": "florida", "city-slug": "orlando" },
-  { "state-slug": "texas", "city-slug": "houston" },
-  { "state-slug": "texas", "city-slug": "dallas" },
-  { "state-slug": "california", "city-slug": "los-angeles" },
-  { "state-slug": "california", "city-slug": "san-diego" },
-  { "state-slug": "new-york", "city-slug": "new-york" },
-  { "state-slug": "arizona", "city-slug": "phoenix" },
-  { "state-slug": "ohio", "city-slug": "columbus" },
-  { "state-slug": "ohio", "city-slug": "cleveland" },
-  { "state-slug": "georgia", "city-slug": "atlanta" },
-  { "state-slug": "north-carolina", "city-slug": "charlotte" },
-  { "state-slug": "south-carolina", "city-slug": "columbia" },
-  { "state-slug": "south-carolina", "city-slug": "charleston" },
-  { "state-slug": "colorado", "city-slug": "denver" },
-  { "state-slug": "minnesota", "city-slug": "minneapolis" },
-  { "state-slug": "minnesota", "city-slug": "st-paul" },
-  { "state-slug": "indiana", "city-slug": "indianapolis" },
-  { "state-slug": "missouri", "city-slug": "kansas-city" },
-  { "state-slug": "missouri", "city-slug": "st-louis" },
-  { "state-slug": "louisiana", "city-slug": "new-orleans" },
-  { "state-slug": "louisiana", "city-slug": "baton-rouge" },
-  { "state-slug": "alabama", "city-slug": "birmingham" },
-  { "state-slug": "wisconsin", "city-slug": "milwaukee" },
-  { "state-slug": "michigan", "city-slug": "detroit" },
-  { "state-slug": "pennsylvania", "city-slug": "philadelphia" },
-];
+const DEPLOYED_STATE_NAMES = [
+  "Alabama",
+  "Arizona",
+  "California",
+  "Colorado",
+  "Florida",
+  "Georgia",
+  "Illinois",
+  "Indiana",
+  "Louisiana",
+  "Maryland",
+  "Massachusetts",
+  "Michigan",
+  "Minnesota",
+  "Missouri",
+  "New York",
+  "North Carolina",
+  "Ohio",
+  "Pennsylvania",
+  "South Carolina",
+  "Texas",
+  "Virginia",
+  "Washington",
+  "Wisconsin",
+] as const;
 
 export function generateStaticParams() {
-  return FALLBACK_CITY_PARAMS;
+  const params: { "state-slug": string; "city-slug": string }[] = [];
+  for (const stateName of DEPLOYED_STATE_NAMES) {
+    const stateSlug = stateToSlug(stateName);
+    const cities = getCitiesForState(stateSlug)
+      .slice()
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 2);
+    for (const city of cities) {
+      params.push({ "state-slug": stateSlug, "city-slug": city.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({
