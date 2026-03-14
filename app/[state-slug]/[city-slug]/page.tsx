@@ -28,6 +28,7 @@ const DEPLOYED_STATE_NAMES = [
   "Delaware",
   "Florida",
   "Georgia",
+  "Hawaii",
   "Idaho",
   "Illinois",
   "Indiana",
@@ -54,11 +55,14 @@ const DEPLOYED_STATE_NAMES = [
   "Pennsylvania",
   "Rhode Island",
   "South Carolina",
+  "South Dakota",
   "Tennessee",
   "Texas",
   "Virginia",
   "Washington",
+  "West Virginia",
   "Wisconsin",
+  "Wyoming",
 ] as const;
 
 export function generateStaticParams() {
