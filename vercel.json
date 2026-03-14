@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "app/[state-slug]/[city-slug]/page.tsx": {
+      "maxDuration": 30
+    }
+  }
+}

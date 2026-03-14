@@ -51,7 +51,7 @@ export function generateStaticParams() {
     const cities = getCitiesForState(stateSlug)
       .slice()
       .sort((a, b) => b.count - a.count)
-      .slice(0, 2);
+      .slice(0, 10);
     for (const city of cities) {
       params.push({ "state-slug": stateSlug, "city-slug": city.slug });
     }
