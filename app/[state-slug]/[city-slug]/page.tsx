@@ -20,6 +20,7 @@ export const dynamic = "force-dynamic";
 
 const DEPLOYED_STATE_NAMES = [
   "Alabama",
+  "Alaska",
   "Arizona",
   "Arkansas",
   "California",
@@ -58,6 +59,7 @@ const DEPLOYED_STATE_NAMES = [
   "South Dakota",
   "Tennessee",
   "Texas",
+  "Vermont",
   "Virginia",
   "Washington",
   "West Virginia",
