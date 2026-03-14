@@ -16,7 +16,7 @@ const VALID_STATE_SLUGS = new Set(US_STATES.map((s) => stateToSlug(s)));
 const SITE_URL = "https://www.daycaredirectories.com";
 
 export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours ISR — city pages generated on first request
+export const dynamic = "force-dynamic";
 
 const DEPLOYED_STATE_NAMES = [
   "Alabama",
