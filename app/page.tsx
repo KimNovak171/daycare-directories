@@ -7,6 +7,7 @@ import {
   getCitiesForState,
   slugify,
 } from "@/lib/data";
+import { getProvinceSlugs, getFacilitiesForProvince, getCitiesForProvince } from "@/lib/canadaData";
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
 import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
@@ -194,10 +195,10 @@ export default function HomePage() {
               style={{ backgroundColor: HERO_SOFT }}
             >
               <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
-                States Covered
+                States & Provinces
               </p>
               <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">
-                {totalStates}
+                {totalStatesAndProvinces}
               </p>
             </div>
             <div
