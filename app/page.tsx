@@ -146,13 +146,23 @@ const HERO_SOFT = "rgba(13, 148, 136, 0.2)";
 
 export default function HomePage() {
   const stateSlugs = getStateSlugs();
-  const allFacilities = getAllFacilities();
-  const totalFacilities = allFacilities.length;
-  const totalStates = stateSlugs.length;
-  const totalCities = stateSlugs.reduce(
+  const provinceSlugs = getProvinceSlugs();
+  const usFacilities = getAllFacilities();
+  const canadaFacilitiesCount = provinceSlugs.reduce(
+    (acc, slug) => acc + getFacilitiesForProvince(slug).length,
+    0
+  );
+  const totalFacilities = usFacilities.length + canadaFacilitiesCount;
+  const totalStatesAndProvinces = stateSlugs.length + provinceSlugs.length;
+  const usCities = stateSlugs.reduce(
     (acc, slug) => acc + getCitiesForState(slug).length,
     0
   );
+  const canadaCities = provinceSlugs.reduce(
+    (acc, slug) => acc + getCitiesForProvince(slug).length,
+    0
+  );
+  const totalCities = usCities + canadaCities;
   const featured = getFeaturedFacilities(3);
   const showFeatured = featured.length > 0 ? featured : FEATURED_PLACEHOLDER_FACILITIES;
 
