@@ -60,12 +60,24 @@ export default function Footer() {
               Canada
             </Link>
           </div>
-          <div className="mt-4 pt-4 border-t border-slate-200">
+          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 pt-4 border-t border-slate-200">
             <Link
               href="/advertise"
               className="font-medium text-teal-700 hover:underline"
             >
               Advertise
+            </Link>
+            <Link
+              href="/contact"
+              className="font-medium text-teal-700 hover:underline"
+            >
+              Contact
+            </Link>
+            <Link
+              href="/privacy"
+              className="font-medium text-teal-700 hover:underline"
+            >
+              Privacy Policy
             </Link>
           </div>
         </nav>
