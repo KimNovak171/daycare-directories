@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 import { getStateSlugs, getCitiesForState } from "@/lib/data";
-import { US_STATES, stateToSlug } from "@/lib/states";
 import { CANADA_PROVINCES, provinceToSlug } from "@/lib/canada";
 
 const SITE_URL = "https://www.daycaredirectories.com";
@@ -27,20 +26,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // USA state pages
-  for (const stateName of US_STATES) {
-    const stateSlug = stateToSlug(stateName);
+  // USA state and city pages (from data: all states/regions with facility files, including Washington D.C.)
+  const stateSlugs = getStateSlugs();
+  for (const stateSlug of stateSlugs) {
     entries.push({
       url: `${SITE_URL}/${stateSlug}`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     });
-  }
-
-  // USA city pages
-  for (const stateName of US_STATES) {
-    const stateSlug = stateToSlug(stateName);
     const cities = getCitiesForState(stateSlug);
     for (const city of cities) {
       entries.push({

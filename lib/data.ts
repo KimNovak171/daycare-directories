@@ -25,6 +25,7 @@ export function getStateSlugs(): string[] {
 }
 
 export function getStateNameFromSlug(slug: string): string {
+  if (slug === "washington-dc") return "Washington, D.C.";
   return slug
     .split("-")
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -134,10 +135,40 @@ export function getCareTypeBreakdown(facilities: Facility[]): Record<string, num
   return breakdown;
 }
 
+/**
+ * Returns up to `limit` facilities for the homepage "Featured" section.
+ * Chooses popular facilities (high rating + reviews) from different locations
+ * and different Google categories (care types).
+ */
 export function getFeaturedFacilities(limit = 3): Facility[] {
   const all = getAllFacilities();
-  const featured = all.filter((f) => f.featured || (f.rating >= 3 && f.reviews > 0));
-  return featured.slice(0, limit);
+  const popular = all.filter(
+    (f) =>
+      (f.featured || f.premium) ||
+      (Number(f.rating) >= 4 && (f.reviews ?? 0) >= 30)
+  );
+  const byPopularity = [...popular].sort(
+    (a, b) => (b.reviews ?? 0) * (b.rating ?? 0) - (a.reviews ?? 0) * (a.rating ?? 0)
+  );
+
+  const picked: Facility[] = [];
+  const usedLocations = new Set<string>();
+  const usedCareTypes = new Set<string>();
+
+  for (const f of byPopularity) {
+    if (picked.length >= limit) break;
+    const location = `${f.city}|${f.state}`.toLowerCase();
+    const careType = (f.care_type || "Other").trim();
+    const locationOk = !usedLocations.has(location);
+    const careTypeOk = !usedCareTypes.has(careType);
+    if (locationOk && careTypeOk) {
+      picked.push(f);
+      usedLocations.add(location);
+      usedCareTypes.add(careType);
+    }
+  }
+
+  return picked;
 }
 
 /** Top N cities by facility count (for state page intro). */

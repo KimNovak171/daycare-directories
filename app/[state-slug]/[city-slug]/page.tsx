@@ -12,7 +12,10 @@ import {
 import { US_STATES, stateToSlug } from "@/lib/states";
 import FacilityCard from "@/components/FacilityCard";
 
-const VALID_STATE_SLUGS = new Set(US_STATES.map((s) => stateToSlug(s)));
+const VALID_STATE_SLUGS = new Set([
+  ...US_STATES.map((s) => stateToSlug(s)),
+  "washington-dc",
+]);
 const SITE_URL = "https://www.daycaredirectories.com";
 
 export const dynamicParams = true;
@@ -37,6 +40,7 @@ const DEPLOYED_STATE_NAMES = [
   "Kansas",
   "Kentucky",
   "Louisiana",
+  "Maine",
   "Maryland",
   "Massachusetts",
   "Michigan",
@@ -59,6 +63,7 @@ const DEPLOYED_STATE_NAMES = [
   "South Dakota",
   "Tennessee",
   "Texas",
+  "Utah",
   "Vermont",
   "Virginia",
   "Washington",
@@ -67,10 +72,15 @@ const DEPLOYED_STATE_NAMES = [
   "Wyoming",
 ] as const;
 
+const EXTRA_STATE_SLUGS = ["washington-dc"] as const;
+
 export function generateStaticParams() {
   const params: { "state-slug": string; "city-slug": string }[] = [];
-  for (const stateName of DEPLOYED_STATE_NAMES) {
-    const stateSlug = stateToSlug(stateName);
+  const stateSlugs = [
+    ...DEPLOYED_STATE_NAMES.map((n) => stateToSlug(n)),
+    ...EXTRA_STATE_SLUGS,
+  ];
+  for (const stateSlug of stateSlugs) {
     const cities = getCitiesForState(stateSlug)
       .slice()
       .sort((a, b) => b.count - a.count)

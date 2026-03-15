@@ -11,6 +11,20 @@ import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
 import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
 
+/** States + Washington, D.C. for homepage grid and link list (DC inserted after Washington). */
+const HOMEPAGE_STATE_NAMES = (() => {
+  const i = US_STATES.indexOf("Washington");
+  return [
+    ...US_STATES.slice(0, i + 1),
+    "Washington, D.C.",
+    ...US_STATES.slice(i + 1),
+  ] as const;
+})();
+
+function stateSlugForHomepage(name: string): string {
+  return name === "Washington, D.C." ? "washington-dc" : stateToSlug(name);
+}
+
 // Ensure homepage is statically generated at build time (fixes 404 on Vercel)
 export const dynamic = "force-static";
 
@@ -210,21 +224,21 @@ export default function HomePage() {
           Select a state to see cities and daycare listings.
         </p>
         <p className="mt-3 text-sm font-medium text-slate-600">
-          {US_STATES.map((stateName) => (
+          {HOMEPAGE_STATE_NAMES.map((stateName) => (
             <span key={stateName}>
               <Link
-                href={`/${stateToSlug(stateName)}`}
+                href={`/${stateSlugForHomepage(stateName)}`}
                 className="text-teal-600 underline underline-offset-2 hover:text-teal-700"
               >
                 {stateName}
               </Link>
-              {stateName !== US_STATES[US_STATES.length - 1] ? " • " : ""}
+              {stateName !== HOMEPAGE_STATE_NAMES[HOMEPAGE_STATE_NAMES.length - 1] ? " • " : ""}
             </span>
           ))}
         </p>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {US_STATES.map((stateName) => {
-            const slug = stateToSlug(stateName);
+          {HOMEPAGE_STATE_NAMES.map((stateName) => {
+            const slug = stateSlugForHomepage(stateName);
             const count = getFacilitiesForState(slug).length;
             return (
               <Link
