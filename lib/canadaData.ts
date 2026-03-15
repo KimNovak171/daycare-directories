@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "fs";
+import { existsSync, readFileSync, readdirSync } from "fs";
 import path from "path";
 import { CANADA_PROVINCES, provinceToSlug, slugToProvinceName } from "@/lib/canada";
 import type { Facility } from "@/lib/types";
