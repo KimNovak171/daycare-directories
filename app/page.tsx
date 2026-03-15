@@ -323,20 +323,28 @@ export default function HomePage() {
         </ol>
       </section>
 
-      {/* Canada */}
+      {/* Canada — single card/banner below Browse by State */}
       <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <div className="rounded-2xl border border-teal-200/80 bg-white p-8 shadow-sm">
-          <h2 className="font-heading text-xl font-semibold text-slate-800">Canada</h2>
-          <p className="mt-2 text-slate-600">
-            Browse daycare and childcare listings by province.
-          </p>
-          <Link
-            href="/canada"
-            className="mt-4 inline-block rounded-full bg-teal-500 px-5 py-2.5 font-medium text-white hover:bg-teal-600"
-          >
-            Browse Canada
-          </Link>
-        </div>
+        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+          Canada
+        </h2>
+        <p className="mt-1 text-slate-600">
+          Browse daycare and childcare by province and city.
+        </p>
+        <Link
+          href="/canada"
+          className="mt-6 flex rounded-xl border-2 border-teal-200 bg-white p-6 shadow-md transition hover:border-teal-500 hover:bg-teal-50/50 sm:p-8"
+        >
+          <div>
+            <p className="font-heading text-lg font-semibold text-slate-800">Canada Daycare & Childcare</p>
+            <p className="mt-1 text-sm text-slate-600">
+              Browse by province and city across Canada.
+            </p>
+            <span className="mt-3 inline-block rounded-full bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600">
+              Browse Canada →
+            </span>
+          </div>
+        </Link>
       </section>
 
       {/* Featured Daycare Centers */}

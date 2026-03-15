@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "fs";
 import path from "path";
 import type { Facility } from "./types";
+import { getProvinceSlugs } from "./canadaData";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
@@ -13,10 +14,12 @@ export function slugify(text: string): string {
 
 export function getStateSlugs(): string[] {
   try {
+    const provinceSlugs = new Set(getProvinceSlugs());
     const files = readdirSync(DATA_DIR);
     const slugs = files
       .filter((f) => f.endsWith("_facilities.json") && !f.startsWith("canada"))
       .map((f) => f.replace(/_facilities\.json$/, "").replace(/_/g, "-"))
+      .filter((slug) => !provinceSlugs.has(slug))
       .sort((a, b) => a.localeCompare(b));
     return slugs;
   } catch {
