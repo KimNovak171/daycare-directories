@@ -55,6 +55,16 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
   const isPremium = facility.premium === true;
   const showReviewCarefully = showBadge && !recommended;
 
+  const rating = facility.rating;
+  const reviewCount = facility.reviews;
+  const includeAggregateRating =
+    typeof rating === "number" &&
+    typeof reviewCount === "number" &&
+    Number.isFinite(rating) &&
+    Number.isFinite(reviewCount) &&
+    rating > 0 &&
+    reviewCount > 0;
+
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -67,14 +77,14 @@ export default function FacilityCard({ facility, showBadge = true }: FacilityCar
     },
     ...(facility.phone && { telephone: facility.phone }),
     ...(facility.website && { url: facility.website }),
-    ...(facility.rating != null &&
-      (facility.reviews ?? 0) > 0 && {
-        aggregateRating: {
-          "@type": "AggregateRating",
-          ratingValue: facility.rating,
-          reviewCount: facility.reviews ?? 0,
-        },
-      }),
+    ...(includeAggregateRating && {
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: rating,
+        ratingCount: reviewCount,
+        reviewCount,
+      },
+    }),
   };
 
   return (
