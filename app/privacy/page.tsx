@@ -109,10 +109,10 @@ export default function PrivacyPage() {
               <br />
               Email:{" "}
               <a
-                href="mailto:hello@daycaredirectories.com"
+                href="mailto:hello@directoriesnetwork.com"
                 className="text-teal-600 hover:underline"
               >
-                hello@daycaredirectories.com
+                hello@directoriesnetwork.com
               </a>
             </p>
           </section>

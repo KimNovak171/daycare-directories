@@ -4,10 +4,10 @@ import ContactForm from "./ContactForm";
 export const metadata = {
   title: "Contact Us | Daycare Directories",
   description:
-    "Get in touch with Daycare Directories. Send us a message or email hello@daycaredirectories.com.",
+    "Get in touch with Daycare Directories. Send us a message or email hello@directoriesnetwork.com.",
 };
 
-const CONTACT_EMAIL = "hello@daycaredirectories.com";
+const CONTACT_EMAIL = "hello@directoriesnetwork.com";
 
 export default function ContactPage() {
   return (
