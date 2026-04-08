@@ -186,9 +186,16 @@ export default function HomePage() {
               city. Compare ratings and find the right fit for your family.
             </p>
           </div>
+        </div>
+      </section>
 
-          {/* Stats bar — inside hero, large bold white/amber numbers */}
-          <div className="mt-8 grid w-full grid-cols-3 gap-4 rounded-2xl border-2 border-amber-200/40 p-6 shadow-xl sm:gap-6">
+      {/* Stats bar — after hero, before state grid */}
+      <section
+        className="relative overflow-hidden px-4 pb-14 sm:px-6 sm:pb-20"
+        style={{ backgroundColor: HERO_BG }}
+      >
+        <div className="mx-auto max-w-6xl">
+          <div className="grid w-full grid-cols-3 gap-4 rounded-2xl border-2 border-amber-200/40 p-6 shadow-xl sm:gap-6">
             <div
               className="rounded-xl p-4 text-center ring-1 ring-white/10"
               style={{ backgroundColor: HERO_SOFT }}
