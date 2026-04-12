@@ -30,6 +30,12 @@ export default function Header() {
             Contact
           </Link>
           <Link
+            href="/blog"
+            className="text-sm font-medium text-slate-600 hover:text-teal-700"
+          >
+            Blog
+          </Link>
+          <Link
             href="/advertise"
             className="rounded-full bg-teal-500 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-600"
           >

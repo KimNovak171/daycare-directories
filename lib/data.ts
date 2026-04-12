@@ -27,6 +27,17 @@ export function getStateSlugs(): string[] {
   }
 }
 
+/** US state + city slugs for static route generation (from on-disk facility data). */
+export async function getDirectoryIndex(): Promise<
+  { stateSlug: string; cities: { citySlug: string }[] }[]
+> {
+  const stateSlugs = getStateSlugs();
+  return stateSlugs.map((stateSlug) => ({
+    stateSlug,
+    cities: getCitiesForState(stateSlug).map((city) => ({ citySlug: city.slug })),
+  }));
+}
+
 export function getStateNameFromSlug(slug: string): string {
   if (slug === "washington-dc") return "Washington, D.C.";
   return slug

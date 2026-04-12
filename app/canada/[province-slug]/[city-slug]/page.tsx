@@ -14,17 +14,13 @@ import FacilityCard from "@/components/FacilityCard";
 const SITE_URL = "https://www.daycaredirectories.com";
 const BORDER_LEFT = "#115e59";
 
-export const dynamicParams = true;
-export const dynamic = "force-dynamic";
-
 export function generateStaticParams() {
   const params: { "province-slug": string; "city-slug": string }[] = [];
   const provinceSlugs = getProvinceSlugs();
   for (const provinceSlug of provinceSlugs) {
     const cities = getCitiesForProvince(provinceSlug)
       .slice()
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+      .sort((a, b) => b.count - a.count);
     for (const city of cities) {
       params.push({ "province-slug": provinceSlug, "city-slug": city.slug });
     }
