@@ -1,6 +1,5 @@
 import { MetadataRoute } from "next";
 import { getStateSlugs, getCitiesForState } from "@/lib/data";
-import { getProvinceSlugs, getCitiesForProvince } from "@/lib/canadaData";
 
 const SITE_URL = "https://www.daycaredirectories.com";
 
@@ -17,12 +16,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
-    },
-    {
-      url: `${SITE_URL}/canada`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
     },
   ];
 
@@ -42,26 +35,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.8,
-      });
-    }
-  }
-
-  // Canada province and city pages (from data: provinces with facility files)
-  const provinceSlugs = getProvinceSlugs();
-  for (const provinceSlug of provinceSlugs) {
-    entries.push({
-      url: `${SITE_URL}/canada/${provinceSlug}`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    });
-    const cities = getCitiesForProvince(provinceSlug);
-    for (const city of cities) {
-      entries.push({
-        url: `${SITE_URL}/canada/${provinceSlug}/${city.slug}`,
-        lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.7,
       });
     }
   }

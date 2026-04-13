@@ -52,14 +52,6 @@ export default function Footer() {
               );
             })}
           </ul>
-          <div className="mt-4 pt-4 border-t border-slate-200">
-            <Link
-              href="/canada"
-              className="font-medium text-teal-700 hover:underline"
-            >
-              Canada
-            </Link>
-          </div>
           <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 pt-4 border-t border-slate-200">
             <Link
               href="/advertise"

@@ -18,12 +18,6 @@ export default function Header() {
             USA
           </Link>
           <Link
-            href="/canada"
-            className="text-sm font-medium text-slate-600 hover:text-teal-700"
-          >
-            Canada
-          </Link>
-          <Link
             href="/contact"
             className="text-sm font-medium text-slate-600 hover:text-teal-700"
           >

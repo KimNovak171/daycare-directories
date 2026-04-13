@@ -26,13 +26,13 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Daycare Directories — Find the Perfect Childcare City by City",
   description:
-    "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the USA and Canada.",
+    "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the United States.",
   openGraph: {
     siteName: "Daycare Directories",
     type: "website",
     title: "Daycare Directories — Find the Perfect Childcare City by City",
     description:
-      "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the USA and Canada.",
+      "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the United States.",
   },
 };
 
@@ -47,7 +47,7 @@ export default function RootLayout({
     name: "Daycare Directories",
     url: SITE_URL,
     description:
-      "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the USA and Canada.",
+      "Find trusted daycare centers, preschools, and childcare providers near you. Browse by state and city across the United States.",
   };
 
   return (

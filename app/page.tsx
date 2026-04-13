@@ -7,7 +7,6 @@ import {
   getCitiesForState,
   slugify,
 } from "@/lib/data";
-import { getProvinceSlugs, getFacilitiesForProvince, getCitiesForProvince } from "@/lib/canadaData";
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
 import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
@@ -146,23 +145,13 @@ const HERO_SOFT = "rgba(13, 148, 136, 0.2)";
 
 export default function HomePage() {
   const stateSlugs = getStateSlugs();
-  const provinceSlugs = getProvinceSlugs();
   const usFacilities = getAllFacilities();
-  const canadaFacilitiesCount = provinceSlugs.reduce(
-    (acc, slug) => acc + getFacilitiesForProvince(slug).length,
-    0
-  );
-  const totalFacilities = usFacilities.length + canadaFacilitiesCount;
-  const totalStatesAndProvinces = stateSlugs.length + provinceSlugs.length;
-  const usCities = stateSlugs.reduce(
+  const totalFacilities = usFacilities.length;
+  const totalStates = stateSlugs.length;
+  const totalCities = stateSlugs.reduce(
     (acc, slug) => acc + getCitiesForState(slug).length,
     0
   );
-  const canadaCities = provinceSlugs.reduce(
-    (acc, slug) => acc + getCitiesForProvince(slug).length,
-    0
-  );
-  const totalCities = usCities + canadaCities;
   const featured = getFeaturedFacilities(3);
   const showFeatured = featured.length > 0 ? featured : FEATURED_PLACEHOLDER_FACILITIES;
 
@@ -212,10 +201,10 @@ export default function HomePage() {
               style={{ backgroundColor: HERO_SOFT }}
             >
               <p className="text-xs font-semibold uppercase tracking-wide text-amber-200/90">
-                States & Provinces
+                States
               </p>
               <p className="mt-1 text-2xl font-bold text-white sm:text-3xl">
-                {totalStatesAndProvinces}
+                {totalStates}
               </p>
             </div>
             <div
@@ -339,30 +328,6 @@ export default function HomePage() {
             </div>
           </li>
         </ol>
-      </section>
-
-      {/* Canada — single card/banner below Browse by State */}
-      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
-        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
-          Canada
-        </h2>
-        <p className="mt-1 text-slate-600">
-          Browse daycare and childcare by province and city.
-        </p>
-        <Link
-          href="/canada"
-          className="mt-6 flex rounded-xl border-2 border-teal-200 bg-white p-6 shadow-md transition hover:border-teal-500 hover:bg-teal-50/50 sm:p-8"
-        >
-          <div>
-            <p className="font-heading text-lg font-semibold text-slate-800">Canada Daycare & Childcare</p>
-            <p className="mt-1 text-sm text-slate-600">
-              Browse by province and city across Canada.
-            </p>
-            <span className="mt-3 inline-block rounded-full bg-teal-500 px-4 py-2 text-sm font-medium text-white hover:bg-teal-600">
-              Browse Canada →
-            </span>
-          </div>
-        </Link>
       </section>
 
       {/* Featured Daycare Centers */}
