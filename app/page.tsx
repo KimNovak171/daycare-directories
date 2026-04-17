@@ -10,6 +10,12 @@ import {
 import { US_STATES, stateToSlug } from "@/lib/states";
 import type { Facility } from "@/lib/types";
 import { getCareTypeDisplay } from "@/lib/careTypeDisplay";
+import {
+  getProvinceSlugs,
+  getFacilitiesForProvince,
+  getCitiesForProvince,
+  slugToProvinceName,
+} from "@/lib/canadaFacilities";
 
 /** States + Washington, D.C. for homepage grid and link list (DC inserted after Washington). */
 const HOMEPAGE_STATE_NAMES = (() => {
@@ -145,13 +151,23 @@ const HERO_SOFT = "rgba(13, 148, 136, 0.2)";
 
 export default function HomePage() {
   const stateSlugs = getStateSlugs();
+  const provinceSlugs = getProvinceSlugs();
   const usFacilities = getAllFacilities();
-  const totalFacilities = usFacilities.length;
+  const canadianFacilitiesCount = provinceSlugs.reduce(
+    (acc, slug) => acc + getFacilitiesForProvince(slug).length,
+    0
+  );
+  const totalFacilities = usFacilities.length + canadianFacilitiesCount;
   const totalStates = stateSlugs.length;
-  const totalCities = stateSlugs.reduce(
+  const usCityCount = stateSlugs.reduce(
     (acc, slug) => acc + getCitiesForState(slug).length,
     0
   );
+  const canadaCityCount = provinceSlugs.reduce(
+    (acc, slug) => acc + getCitiesForProvince(slug).length,
+    0
+  );
+  const totalCities = usCityCount + canadaCityCount;
   const featured = getFeaturedFacilities(3);
   const showFeatured = featured.length > 0 ? featured : FEATURED_PLACEHOLDER_FACILITIES;
 
@@ -254,6 +270,34 @@ export default function HomePage() {
                 className="rounded-xl border-2 border-teal-200 bg-white p-5 shadow-md transition hover:border-teal-500 hover:bg-teal-50/50"
               >
                 <p className="font-heading text-lg font-semibold text-slate-800">{stateName}</p>
+                <p className="mt-1 text-sm text-slate-600">
+                  {count.toLocaleString()} {count === 1 ? "facility" : "facilities"}
+                </p>
+              </Link>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Canadian provinces — same card pattern as US states */}
+      <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+          Canadian Provinces
+        </h2>
+        <p className="mt-1 text-slate-600">
+          Select a province or territory to see cities and daycare listings in Canada.
+        </p>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          {provinceSlugs.map((slug) => {
+            const name = slugToProvinceName(slug);
+            const count = getFacilitiesForProvince(slug).length;
+            return (
+              <Link
+                key={slug}
+                href={`/canada/${slug}`}
+                className="rounded-xl border-2 border-teal-200 bg-white p-5 shadow-md transition hover:border-teal-500 hover:bg-teal-50/50"
+              >
+                <p className="font-heading text-lg font-semibold text-slate-800">{name}</p>
                 <p className="mt-1 text-sm text-slate-600">
                   {count.toLocaleString()} {count === 1 ? "facility" : "facilities"}
                 </p>
