@@ -11,6 +11,18 @@ interface FacilityCardProps {
   showBadge?: boolean;
 }
 
+function mapsUrlForFacility(facility: Facility): string {
+  if (facility.place_id) {
+    return `https://www.google.com/maps/place/?q=place_id:${facility.place_id}`;
+  }
+  if (facility.latitude != null && facility.longitude != null) {
+    return `https://www.google.com/maps?q=${facility.latitude},${facility.longitude}`;
+  }
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    [facility.address, facility.city, facility.state].filter(Boolean).join(", ")
+  )}`;
+}
+
 function renderRating(
   rating: number | undefined | null,
   reviewCount: number,
@@ -44,12 +56,7 @@ function renderRating(
 export default function FacilityCard({ facility, showBadge = true }: FacilityCardProps) {
   const recommended =
     (facility.rating ?? 0) >= RECOMMENDED_RATING_THRESHOLD && facility.rating != null;
-  const mapsUrl =
-    facility.latitude != null && facility.longitude != null
-      ? `https://www.google.com/maps?q=${facility.latitude},${facility.longitude}`
-      : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-          [facility.address, facility.city, facility.state].filter(Boolean).join(", ")
-        )}`;
+  const mapsUrl = mapsUrlForFacility(facility);
   const careDisplay = getCareTypeDisplay(facility.care_type);
   const isFeatured = facility.featured === true;
   const isPremium = facility.premium === true;

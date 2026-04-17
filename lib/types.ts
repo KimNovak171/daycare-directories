@@ -24,6 +24,8 @@ export interface Facility {
   longitude?: number;
   featured?: boolean;
   premium?: boolean;
+  /** Google Places id — preferred for Maps links when present. */
+  place_id?: string;
 }
 
 export const RECOMMENDED_RATING_THRESHOLD = 3.0;
