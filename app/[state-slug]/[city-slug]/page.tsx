@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
+  getStateSlugs,
   getStateNameFromSlug,
   getFacilitiesForCity,
   getCitiesForState,
@@ -18,74 +19,13 @@ const VALID_STATE_SLUGS = new Set([
 ]);
 const SITE_URL = "https://www.daycaredirectories.com";
 
-export const dynamicParams = true;
-export const dynamic = "force-dynamic";
-
-const DEPLOYED_STATE_NAMES = [
-  "Alabama",
-  "Alaska",
-  "Arizona",
-  "Arkansas",
-  "California",
-  "Colorado",
-  "Connecticut",
-  "Delaware",
-  "Florida",
-  "Georgia",
-  "Hawaii",
-  "Idaho",
-  "Illinois",
-  "Indiana",
-  "Iowa",
-  "Kansas",
-  "Kentucky",
-  "Louisiana",
-  "Maine",
-  "Maryland",
-  "Massachusetts",
-  "Michigan",
-  "Minnesota",
-  "Mississippi",
-  "Missouri",
-  "Montana",
-  "Nebraska",
-  "Nevada",
-  "New Hampshire",
-  "New Jersey",
-  "New York",
-  "North Carolina",
-  "Ohio",
-  "Oklahoma",
-  "Oregon",
-  "Pennsylvania",
-  "Rhode Island",
-  "South Carolina",
-  "South Dakota",
-  "Tennessee",
-  "Texas",
-  "Utah",
-  "Vermont",
-  "Virginia",
-  "Washington",
-  "West Virginia",
-  "Wisconsin",
-  "Wyoming",
-] as const;
-
-const EXTRA_STATE_SLUGS = ["washington-dc"] as const;
+export const dynamicParams = false;
+export const dynamic = "force-static";
 
 export function generateStaticParams() {
   const params: { "state-slug": string; "city-slug": string }[] = [];
-  const stateSlugs = [
-    ...DEPLOYED_STATE_NAMES.map((n) => stateToSlug(n)),
-    ...EXTRA_STATE_SLUGS,
-  ];
-  for (const stateSlug of stateSlugs) {
-    const cities = getCitiesForState(stateSlug)
-      .slice()
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
-    for (const city of cities) {
+  for (const stateSlug of getStateSlugs()) {
+    for (const city of getCitiesForState(stateSlug)) {
       params.push({ "state-slug": stateSlug, "city-slug": city.slug });
     }
   }

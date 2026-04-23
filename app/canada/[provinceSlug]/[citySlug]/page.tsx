@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
   getProvinceSlugs,
+  getCitiesForProvince,
   getFacilitiesForProvinceCity,
   getCityNameFromSlug,
   getOtherCitiesInProvince,
@@ -13,11 +14,16 @@ import FacilityCard from "@/components/FacilityCard";
 const SITE_URL = "https://www.daycaredirectories.com";
 
 export const dynamic = "force-static";
-export const dynamicParams = true;
-export const revalidate = 86400;
+export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return [];
+  const params: { provinceSlug: string; citySlug: string }[] = [];
+  for (const provinceSlug of getProvinceSlugs()) {
+    for (const city of getCitiesForProvince(provinceSlug)) {
+      params.push({ provinceSlug, citySlug: city.slug });
+    }
+  }
+  return params;
 }
 
 export async function generateMetadata({

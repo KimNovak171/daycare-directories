@@ -1,5 +1,8 @@
 import { MetadataRoute } from "next";
 import { getStateSlugs, getCitiesForState } from "@/lib/data";
+import { getProvinceSlugs, getCitiesForProvince } from "@/lib/canadaFacilities";
+
+export const dynamic = "force-static";
 
 const SITE_URL = "https://www.daycaredirectories.com";
 
@@ -32,6 +35,32 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const city of cities) {
       entries.push({
         url: `${SITE_URL}/${stateSlug}/${city.slug}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.8,
+      });
+    }
+  }
+
+  entries.push({
+    url: `${SITE_URL}/canada`,
+    lastModified: new Date(),
+    changeFrequency: "weekly",
+    priority: 0.9,
+  });
+
+  const provinceSlugs = getProvinceSlugs();
+  for (const provinceSlug of provinceSlugs) {
+    entries.push({
+      url: `${SITE_URL}/canada/${provinceSlug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
+      priority: 0.9,
+    });
+    const cities = getCitiesForProvince(provinceSlug);
+    for (const city of cities) {
+      entries.push({
+        url: `${SITE_URL}/canada/${provinceSlug}/${city.slug}`,
         lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.8,

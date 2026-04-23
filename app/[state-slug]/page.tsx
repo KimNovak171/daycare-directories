@@ -23,8 +23,7 @@ const HERO_SOFT = "rgba(13, 148, 136, 0.15)";
 const ACCENT_TEAL = "#0d9488";
 const BORDER_LEFT = "#115e59";
 
-export const dynamicParams = true;
-export const revalidate = 86400; // 24 hours ISR
+export const dynamicParams = false;
 
 export function generateStaticParams() {
   const stateParams = US_STATES.map((stateName) => ({
